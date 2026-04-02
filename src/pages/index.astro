@@ -270,21 +270,36 @@ const title = "PORTAL.FS | Multiverse Generator"
         .value
       if (!path.startsWith("/")) path = `/${path}`
 
+      // Change the URL immediately so the user sees it in the address bar
+      history.pushState(null, "", path)
+
+      // Play the animation natively on the current index page
       document.getElementById("main-console")?.classList.add("hidden-down")
       document.getElementById("portal-bg")?.classList.add("active-portal")
-      document.getElementById("sim-container")?.classList.add("active")
+      setTimeout(() => {
+        document.getElementById("sim-container")?.classList.add("active")
+      }, 500)
 
       const text = document.getElementById("loading-text")
-      setTimeout(() => (text!.innerText = "EXTRACTING HTML..."), 1000)
-      setTimeout(
-        () =>
-          (text!.innerText = `ROUTING THROUGH ${authState.active?.toUpperCase()}...`),
-        2000
-      )
-      setTimeout(() => (text!.innerText = "DODGING CRONENBERGS..."), 3000)
+      if (text) {
+        setTimeout(() => (text.innerText = "EXTRACTING HTML..."), 1000)
+        setTimeout(
+          () =>
+            (text.innerText = `ROUTING THROUGH ${authState.active?.toUpperCase()}...`),
+          2000
+        )
+        setTimeout(() => (text.innerText = "DODGING CRONENBERGS..."), 3000)
+        setTimeout(() => (text.innerText = "ALMOST THERE, MORTY..."), 6000)
+        setTimeout(
+          () => (text.innerText = "FLURBO CAPACITOR OVERLOAD..."),
+          9000
+        )
+      }
 
-      // After simulation, navigate to the generator route
-      setTimeout(() => (window.location.href = path), 4000)
+      // Hard reload to route exactly to the [...path] sequence and stream the output securely
+      setTimeout(() => {
+        window.location.replace(window.location.href)
+      }, 500)
     })
   </script>
 </Layout>

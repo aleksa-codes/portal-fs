@@ -1,0 +1,197 @@
+---
+import Layout from "@/layouts/layout.astro"
+import { generateDimensionalContent } from "@/utils/ai-provider"
+
+const getContentType = (extension: string): string => {
+  const types: Record<string, string> = {
+    html: "text/html; charset=utf-8",
+    css: "text/css; charset=utf-8",
+    js: "application/javascript; charset=utf-8",
+    json: "application/json; charset=utf-8",
+  }
+  return (
+    types[extension] ||
+    (extension ? "text/plain; charset=utf-8" : "text/html; charset=utf-8")
+  )
+}
+
+const { path = "" } = Astro.params
+if (path.length > 100) {
+  return new Response("Path too long", { status: 400 })
+}
+
+const authCookie = Astro.cookies.get("portal_fs_auth")?.json()
+
+if (!authCookie || !authCookie.active || !authCookie.keys[authCookie.active]) {
+  return new Response(
+    `
+    <body style="background:#120c2b; color:#ff2a2a; font-family:monospace; display:flex; justify-content:center; align-items:center; height:100vh; text-align:center; margin:0;">
+       <div style="border: 4px dashed #ff2a2a; padding: 40px; background: rgba(0,0,0,0.5);">
+         <h1 style="font-size: 3rem; margin:0 0 20px 0;">[ PORTAL COLLAPSE ]</h1>
+         <p style="font-size: 1.5rem;">No power core routed! The dimensional tether snapped.</p>
+         <a href="/" style="display:inline-block; margin-top:20px; color:#94f549; text-decoration:none; border:2px solid #94f549; padding: 10px 20px;">Return to Gadget Console</a>
+       </div>
+    </body>`,
+    { status: 401, headers: { "Content-Type": "text/html" } }
+  )
+}
+
+const extension = path.includes(".") ? path.split(".").slice(-1)[0] : ""
+const contentType = getContentType(extension)
+
+// If it's a raw file (not html), return it immediately by awaiting the content
+if (extension !== "html" && extension !== "") {
+  try {
+    const content = await generateDimensionalContent(
+      path,
+      extension,
+      authCookie.active,
+      authCookie.keys[authCookie.active]
+    )
+    return new Response(content, {
+      status: 200,
+      headers: { "Content-Type": contentType },
+    })
+  } catch (error) {
+    return new Response(JSON.stringify({ error: String(error) }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    })
+  }
+}
+
+// For HTML, we render the page with an animation that awaits the content
+const contentPromise = generateDimensionalContent(
+  path,
+  extension,
+  authCookie.active,
+  authCookie.keys[authCookie.active]
+)
+---
+
+<Layout title={`PORTAL.FS | ${path}`}>
+  <!-- LOADING SIMULATION UI -->
+  <div class="portal-wrapper" id="portal-bg">
+    <div class="portal-swirl portal-layer-1"></div>
+    <div class="portal-swirl portal-layer-2"></div>
+    <div class="portal-swirl portal-layer-3"></div>
+    <div class="portal-swirl portal-layer-4"></div>
+  </div>
+
+  <!-- OUTRO CONSOLE -->
+  <main class="gadget-console" id="main-console">
+    <div class="screw screw-tl"></div><div class="screw screw-tr"></div>
+    <div class="screw screw-bl"></div><div class="screw screw-br"></div>
+
+    <header>
+      <h1 class="app-title">PORTAL.FS</h1>
+      <p class="app-subtitle">Dimensional File Generator v1.37</p>
+    </header>
+
+    <button class="battery-btn" id="openModalBtn">
+      <div class="battery-status-light" id="main-status-light" style="background:#94f549;box-shadow:0 0 15px #94f549, inset 0 0 5px rgba(0,0,0,0.5);"></div>
+      <span id="battery-btn-text">Power Routed: {authCookie.active.toUpperCase()}</span>
+    </button>
+
+    <div class="input-group">
+      <label class="input-label" for="path-input">Target Coordinates:</label>
+      <div class="coordinate-screen">
+        <span class="coord-prefix">DIM://</span>
+        <input
+          type="text"
+          id="path-input"
+          value={path}
+          spellcheck="false"
+        />
+      </div>
+    </div>
+
+    <div class="sticky-note">
+      <b>Aw geez, listen...</b><br />
+      You can just type a path right into the spacetime URL. Like, put <code
+        >/plumbus.html</code
+      > at the end of the address bar up there. Supports HTML, CSS, JS, JSON.
+    </div>
+
+    <div class="portal-btn-container">
+      <button class="portal-btn" id="shootPortalBtn">Shoot Portal</button>
+    </div>
+  </main>
+
+  <div class="simulation-container" id="sim-container" style="z-index: 50;">
+    <div class="loading-text" id="loading-text" style="position:relative; z-index: 101;">
+      SYNTHESIZING MATTER...
+    </div>
+  </div>
+
+  <script is:inline>
+    // Trigger animation slightly later so the initial DOM positions are registered
+    requestAnimationFrame(() => {
+      document.getElementById("main-console")?.classList.add("hidden-down");
+      document.getElementById("portal-bg")?.classList.add("active-portal");
+      setTimeout(() => {
+        document.getElementById("sim-container")?.classList.add("active");
+      }, 500);
+    });
+
+    const text = document.getElementById("loading-text");
+    if (text) {
+      setTimeout(() => (text.innerText = "EXTRACTING HTML..."), 1000);
+      setTimeout(() => (text.innerText = "ROUTING THROUGH DIMENSIONS..."), 2000);
+      setTimeout(() => (text.innerText = "DODGING CRONENBERGS..."), 3000);
+      setTimeout(() => (text.innerText = "ALMOST THERE, MORTY..."), 6000);
+      setTimeout(() => (text.innerText = "FLURBO CAPACITOR OVERLOAD..."), 9000);
+    }
+  </script>
+
+  <!-- Wrap the awaited server generation so the streaming sends the loading UI above first -->
+  {
+    contentPromise.then((content) => (
+      <>
+        <style>
+          #sim-container { display: none !important; }
+          #portal-bg { display: none !important; }
+        </style>
+        
+        <div style="display: flex; flex-direction: column; height: 100vh; width: 100vw; position: absolute; top: 0; left: 0; justify-content: space-between; background: #120c2b; font-family: 'Arial', sans-serif; margin: 0; padding: 0; overflow: hidden; z-index: 100;">
+          <!-- The actual generated code running in an isolated frame -->
+          <iframe style="flex: 1; width: 100%; border: none; overflow-y: auto; background: #fff;" src={`data:text/html;charset=utf-8,${encodeURIComponent(content)}`}></iframe>
+          
+          <!-- R&M Themed Action Bar -->
+          <div style="text-align: center; background: #e4e6eb; border-top: 6px solid #1a1a1a; padding: 20px; box-shadow: 0 -10px 20px rgba(0,0,0,0.5); position: relative; z-index: 100;">
+            <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet" />
+            <div style="display: inline-flex; gap: 20px;">
+              <a href="/" 
+                 style="background: #ff4747; color: #fff; font-family: 'Patrick Hand', cursive; font-size: 1.5rem; font-weight: bold; padding: 10px 25px; border-radius: 12px; border: 4px solid #1a1a1a; text-decoration: none; box-shadow: inset -3px -3px 0px #cc0000, 4px 4px 0px rgba(0,0,0,0.3); transition: transform 0.1s; display:flex; align-items:center; gap:8px;"
+                 onmousedown="this.style.transform='translate(4px,4px)'; this.style.boxShadow='none';"
+                 onmouseup="this.style.transform='none'; this.style.boxShadow='inset -3px -3px 0px #cc0000, 4px 4px 0px rgba(0,0,0,0.3)';">
+                ✖ Close Portal
+              </a>
+        
+              <a href={`data:text/html;charset=utf-8,${encodeURIComponent(content)}`} download={`${path?.split(".")[0] || "dimension"}.html`} 
+                 style="background: #5ceb34; color: #1a1a1a; font-family: 'Patrick Hand', cursive; font-size: 1.5rem; font-weight: bold; padding: 10px 25px; border-radius: 12px; border: 4px solid #1a1a1a; text-decoration: none; box-shadow: inset -3px -3px 0px #3db81e, 4px 4px 0px rgba(0,0,0,0.3); transition: transform 0.1s; display:flex; align-items:center; gap:8px;"
+                 onmousedown="this.style.transform='translate(4px,4px)'; this.style.boxShadow='none';"
+                 onmouseup="this.style.transform='none'; this.style.boxShadow='inset -3px -3px 0px #3db81e, 4px 4px 0px rgba(0,0,0,0.3)';">
+                💾 Extract File
+              </a>
+            </div>
+          </div>
+        </div>
+      </>
+    )).catch((error) => (
+      <>
+        <style>
+          #sim-container { display: none !important; }
+          #portal-bg { display: none !important; }
+        </style>
+        <div style="display:flex; justify-content:center; align-items:center; height:100vh; width:100vw; position:absolute; top:0; left:0; background:#120c2b; color:#ff2a2a; font-family:monospace; text-align:center;">
+          <div style="border: 4px dashed #ff2a2a; padding: 40px; background: rgba(0,0,0,0.5);">
+            <h1 style="font-size: 3rem; margin:0 0 20px 0;">[ DIMENSIONAL TEAR DETECTED ]</h1>
+            <p style="font-size: 1.5rem;">{error instanceof Error ? error.message : String(error)}</p>
+            <a href="/" style="display:inline-block; margin-top:20px; color:#94f549; text-decoration:none; border:2px solid #94f549; padding: 10px 20px;">Return to Hub</a>
+          </div>
+        </div>
+      </>
+    ))
+  }
+</Layout>
