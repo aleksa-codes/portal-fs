@@ -1,0 +1,13 @@
+/* TEAM */
+Developer: aleksa-codes
+Site: https://aleksa.codes
+GitHub: https://github.com/aleksa-codes/portal-fs
+
+/* SITE */
+Last update: 2026/04/02
+Standards: TypeScript, Astro, Tailwind CSS, Vercel AI SDK
+Software: VS Code, Bun, GitHub Copilot
+Hosting: Netlify
+
+/* THANKS */
+Thanks to Rick and Morty for the portal technology and to the Astro community!

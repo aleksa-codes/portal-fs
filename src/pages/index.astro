@@ -1,354 +1,290 @@
 ---
-import '../styles/global.css';
-import { Icon } from 'astro-icon/components';
-
-const title = 'GPT FileSmith';
-
-if (Astro.request.method === 'POST') {
-  try {
-    const data = await Astro.request.formData();
-    let path = data.get('path') as string;
-
-    if (!path.startsWith('/')) {
-      path = `/${path}`;
-    }
-
-    return Astro.redirect(path);
-  } catch (error) {
-    console.error(error);
-  }
-}
+import Layout from "@/layouts/layout.astro"
+const title = "PORTAL.FS | Multiverse Generator"
 ---
 
-<html lang='en'>
-  <head>
-    <meta charset='UTF-8' />
-    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-    <meta
-      name='description'
-      content='GPT FileSmith is a dynamic file generator powered by GPT-4. Enter any URL or file path to instantly create HTML, CSS, JavaScript, JSON files, and more. Default to HTML if no file type is specified. Built with Astro, Tailwind CSS, and deployed on Cloudflare Pages for fast performance and seamless file generation.'
-    />
-    <link rel='icon' type='image/x-icon' href='/favicon.ico' />
-    <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
-    <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png' />
-    <title>{title}</title>
-  </head>
-  <body class='flex h-screen items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-800 p-4'>
-    <a
-      href='https://github.com/aleksa-codes/gpt-filesmith'
-      target='_blank'
-      rel='noopener noreferrer'
-      class='github-corner'
-      aria-label='View source on GitHub'
-      ><svg
-        width='80'
-        height='80'
-        viewBox='0 0 250 250'
-        class='absolute top-0 left-0 scale-x-[-1] fill-[#151513] text-white'
-        aria-hidden='true'
-        ><path d='M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z'></path><path
-          d='M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2'
-          fill='currentColor'
-          class='octo-arm origin-[130px_106px]'></path><path
-          d='M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z'
-          fill='currentColor'
-          class='octo-body'></path></svg
-      ></a
-    >
-    <!-- Notification Toast -->
-    <div
-      id='notification'
-      class='fixed top-4 left-1/2 z-50 hidden -translate-x-1/2 transform rounded-lg p-4 text-center text-white shadow-lg duration-200'
-    >
-    </div>
+<Layout title={title}>
+  <div class="portal-wrapper" id="portal-bg">
+    <div class="portal-swirl portal-layer-1"></div>
+    <div class="portal-swirl portal-layer-2"></div>
+    <div class="portal-swirl portal-layer-3"></div>
+    <div class="portal-swirl portal-layer-4"></div>
+  </div>
 
-    <!-- API Key Modal -->
-    <div id='apiKeyModal' class='fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-xs'>
-      <div class='mx-4 w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl'>
-        <div class='mb-4 flex items-center justify-between'>
-          <h2 class='text-xl font-bold text-gray-800'>Set API Key</h2>
-          <button id='closeModal' class='text-gray-500 hover:text-gray-700'>
-            <Icon name='lucide:x' class='h-6 w-6' />
-          </button>
-        </div>
+  <!-- MAIN CONSOLE -->
+  <main class="gadget-console" id="main-console">
+    <div class="screw screw-tl"></div><div class="screw screw-tr"></div>
+    <div class="screw screw-bl"></div><div class="screw screw-br"></div>
 
-        <div class='space-y-4'>
-          <div class='space-y-2'>
-            <label class='block text-sm font-medium text-gray-700'> OpenAI API Key </label>
-            <input
-              name='apiKey'
-              type='password'
-              id='apiKey'
-              class='w-full rounded-lg border border-gray-300 px-4 py-2 shadow-xs transition duration-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/50 focus:outline-hidden'
-              placeholder='sk-...'
-              required
-            />
-            <div id='apiKeyError' class='mt-1 hidden text-sm text-red-600'></div>
-          </div>
+    <header>
+      <h1 class="app-title">PORTAL.FS</h1>
+      <p class="app-subtitle">Dimensional File Generator v1.37</p>
+    </header>
 
-          <div class='rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800'>
-            <p class='flex items-start gap-2'>
-              <Icon name='lucide:shield' class='mt-0.5 h-5 w-5 flex-shrink-0' />
-              Your API key is securely stored in the browser's local storage and is only used for OpenAI API requests.
-            </p>
-          </div>
+    <button class="battery-btn" id="openModalBtn">
+      <div class="battery-status-light" id="main-status-light"></div>
+      <span id="battery-btn-text">Open Core Battery Bay</span>
+    </button>
 
-          <button
-            id='saveApiKey'
-            class='w-full rounded-lg bg-purple-600 px-4 py-2 font-medium text-white shadow-lg transition duration-200 hover:bg-purple-700 focus:ring-2 focus:ring-purple-500/50 focus:ring-offset-2 focus:outline-hidden'
-          >
-            Save API Key
-          </button>
-        </div>
+    <div class="input-group">
+      <label class="input-label" for="path-input">Target Coordinates:</label>
+      <div class="coordinate-screen">
+        <span class="coord-prefix">DIM://</span>
+        <input
+          type="text"
+          id="path-input"
+          value="pokemon/charizard.html"
+          spellcheck="false"
+        />
       </div>
     </div>
 
-    <main class='w-full max-w-2xl'>
-      <div class='w-full space-y-6 rounded-2xl bg-white/95 p-8 shadow-2xl backdrop-blur-sm'>
-        <div class='text-center'>
-          <h1 class='bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-4xl font-bold text-transparent'>
-            {title}
-          </h1>
-          <p class='mt-2 text-gray-600'>Generate files dynamically with AI</p>
-        </div>
+    <div class="sticky-note">
+      <b>Aw geez, listen...</b><br />
+      You can just type a path right into the spacetime URL. Like, put <code
+        >/plumbus.html</code
+      > at the end of the address bar up there. Supports HTML, CSS, JS, JSON.
+    </div>
 
-        <!-- API Key Status -->
-        <div id='apiKeyStatus' class='hidden'>
-          <div class='flex items-center justify-between rounded-lg bg-gray-50 p-4 shadow-xs'>
-            <div class='flex items-center gap-2'>
-              <Icon name='lucide:check-circle' class='h-5 w-5 text-green-600' />
-              <span class='text-sm text-gray-600'>
-                API Key is set <span class='text-red-600'>(Don't forget to remove it later)</span>
-              </span>
-            </div>
-            <div class='flex gap-2'>
-              <button
-                id='editApiKey'
-                class='flex items-center gap-1 rounded-lg px-2 py-1 text-sm text-gray-600 hover:bg-gray-100'
-              >
-                <Icon name='lucide:edit' class='h-4 w-4' />
-                Edit
-              </button>
-              <button
-                id='removeApiKey'
-                class='flex items-center gap-1 rounded-lg px-2 py-1 text-sm text-red-600 hover:bg-red-50'
-              >
-                <Icon name='lucide:trash-2' class='h-4 w-4' />
-                Remove
-              </button>
-            </div>
-          </div>
-        </div>
+    <div class="portal-btn-container">
+      <button class="portal-btn" id="shootPortalBtn">Shoot Portal</button>
+    </div>
+  </main>
 
-        <!-- Set API Key Button -->
-        <button
-          id='showApiKeyModalBtn'
-          class='w-full rounded-lg border border-purple-200 bg-purple-50 px-4 py-3 text-purple-700 shadow-xs transition duration-200 hover:bg-purple-100'
-        >
-          <div class='flex items-center justify-center gap-2'>
-            <Icon name='lucide:key' class='h-5 w-5' />
-            <span>Set API Key</span>
-          </div>
-        </button>
+  <!-- SIMULATION UI -->
+  <div class="simulation-container" id="sim-container">
+    <div class="loading-text" id="loading-text">SYNTHESIZING MATTER...</div>
+  </div>
 
-        <!-- Path Form -->
-        <form method='POST' class='space-y-6'>
-          <div class='space-y-2'>
-            <label for='path' class='block text-sm font-medium text-gray-700'> Enter Path </label>
-            <div class='relative'>
-              <Icon name='lucide:folder' class='absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-gray-400' />
+  <!-- BATTERY BAY MODAL -->
+  <div class="modal-overlay" id="battery-modal">
+    <div class="battery-bay">
+      <div class="bay-header">
+        <h2 class="bay-title">CORE BATTERY BAY</h2>
+        <button class="close-btn" id="closeModalBtn">X</button>
+      </div>
+
+      <div class="battery-slots-container">
+        {
+          ["openai", "gemini", "claude"].map((provider) => (
+            <div
+              class={`battery-slot slot-${provider}`}
+              id={`slot-${provider}`}
+            >
+              <div class="slot-info">
+                <div class="slot-provider" style="text-transform: capitalize">
+                  {provider}
+                </div>
+                <div class="slot-model">
+                  {provider === "openai"
+                    ? "gpt-5.4-nano"
+                    : provider === "gemini"
+                      ? "gemini-3.1-flash-lite"
+                      : "claude-4.5-haiku"}
+                </div>
+              </div>
               <input
-                type='text'
-                name='path'
-                id='path'
-                class='w-full rounded-lg border border-gray-300 px-4 py-2 pl-10 shadow-xs transition duration-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/50 focus:outline-hidden'
-                placeholder='/pokemon/charizard.html'
-                required
+                type="password"
+                class="slot-input"
+                id={`key-${provider}`}
+                placeholder="Enter Key..."
               />
+              <div class="slot-actions">
+                <button class="route-btn" data-provider={provider}>
+                  ROUTE
+                </button>
+                <button class="slot-btn" data-provider={provider}>
+                  SLAM
+                </button>
+              </div>
             </div>
-          </div>
-
-          <div class='rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800'>
-            <p class='flex items-start gap-2'>
-              <Icon name='lucide:info' class='mt-0.5 h-5 w-5 flex-shrink-0' />
-              <span>
-                To generate a file you can also just add a path with an extension to this URL. For example, try adding <code
-                  class='rounded-sm bg-blue-100 px-1.5 py-0.5'>/example.html</code
-                > at the end of the address in your browser’s URL bar. Supported file types include HTML, CSS, JavaScript,
-                JSON, and more.
-              </span>
-            </p>
-          </div>
-
-          <button
-            type='submit'
-            id='generateBtn'
-            class='w-full rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-3 font-medium text-white shadow-lg transition duration-200 hover:from-purple-700 hover:to-indigo-700 focus:ring-2 focus:ring-purple-500/50 focus:ring-offset-2 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:from-purple-600 disabled:hover:to-indigo-600'
-          >
-            <div class='flex items-center justify-center gap-2'>
-              <Icon name='lucide:wand-2' class='h-5 w-5' />
-              <span>Visit Path</span>
-            </div>
-          </button>
-        </form>
+          ))
+        }
       </div>
-    </main>
 
-    <script>
-      // Initialize on load
-      document.addEventListener('DOMContentLoaded', async () => {
-        try {
-          const response = await fetch('/api/get-cookie', {
-            method: 'GET',
-          });
-          if (!response.ok) {
-            throw new Error('API key retrieval failed');
-          }
-          const { apiKey } = await response.json();
-          if (apiKey) {
-            updateApiKeyUI(apiKey);
-          } else {
-            updateApiKeyUI(null);
-          }
-        } catch (error) {
-          console.error('Error retrieving API key:', error);
-          updateApiKeyUI(null);
-        }
-      });
+      <div class="rick-note">
+        <b>Look at me, Morty!</b> Read the duct tape.<br />
+        I'm not sending your precious API keys to the Galactic Federation. They stay
+        right here securely on the server via HTTP-only cookies and are piped straight
+        to the LLMs. Stop whining about security and route the power!
+      </div>
+    </div>
+  </div>
 
-      // UI Elements
-      const apiKeyModal = document.getElementById('apiKeyModal');
-      const showApiKeyModalBtn = document.getElementById('showApiKeyModalBtn');
-      const closeModalBtn = document.getElementById('closeModal');
-      const apiKeyInput = document.getElementById('apiKey');
-      const saveApiKeyBtn = document.getElementById('saveApiKey');
-      const editApiKeyBtn = document.getElementById('editApiKey');
-      const removeApiKeyBtn = document.getElementById('removeApiKey');
-      const notificationEl = document.getElementById('notification');
+  <!-- GitHub Link Floater -->
+  <a
+    href="https://github.com/aleksa-codes/portal-fs"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="github-floater"
+    title="Source Code Dimension"
+  >
+    <svg viewBox="0 0 24 24">
+      <path
+        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+      ></path>
+    </svg>
+  </a>
 
-      // Modal Controls
-      showApiKeyModalBtn?.addEventListener('click', () => {
-        apiKeyModal?.classList.remove('hidden');
-        apiKeyModal?.classList.add('flex');
-      });
+  <script>
+    interface AuthState {
+      active: string | null
+      keys: Record<string, string>
+    }
+    let authState: AuthState = { active: null, keys: {} }
 
-      const closeModal = () => {
-        apiKeyModal?.classList.add('hidden');
-        apiKeyModal?.classList.remove('flex');
-      };
+    // Initialize API Keys from Backend
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const res = await fetch("/api/auth")
+        authState = await res.json()
+        renderUI()
+      } catch (err) {
+        console.error(err)
+      }
+    })
 
-      closeModalBtn?.addEventListener('click', closeModal);
-      apiKeyModal?.addEventListener('click', (e) => {
-        if (e.target === apiKeyModal) {
-          closeModal();
-        }
-      });
+    // Render the states of the cores based on Auth
+    function renderUI() {
+      ;["openai", "gemini", "claude"].forEach((provider) => {
+        const slot = document.getElementById(`slot-${provider}`)
+        const input = document.getElementById(
+          `key-${provider}`
+        ) as HTMLInputElement
+        const slamBtn = document.querySelector(
+          `.slot-btn[data-provider="${provider}"]`
+        ) as HTMLButtonElement
+        const routeBtn = document.querySelector(
+          `.route-btn[data-provider="${provider}"]`
+        ) as HTMLButtonElement
 
-      // Edit API Key
-      editApiKeyBtn?.addEventListener('click', () => {
-        apiKeyModal?.classList.remove('hidden');
-        apiKeyModal?.classList.add('flex');
-      });
+        if (authState.keys[provider]) {
+          slot?.classList.add("inserted")
+          input.value = "••••••••••••••••••••"
+          input.disabled = true
+          slamBtn.innerText = "LOCKED"
+          slamBtn.classList.add("eject-mode")
+          routeBtn.style.display = "block"
 
-      // Save API Key
-      saveApiKeyBtn?.addEventListener('click', async (e) => {
-        e.preventDefault();
-        const apiKey = (apiKeyInput as HTMLInputElement)?.value;
-        const apiKeyError = document.getElementById('apiKeyError');
-
-        // Validate API key format
-        const isValidApiKey = /^sk-[a-zA-Z0-9-_]{1,250}$/.test(apiKey);
-
-        if (!isValidApiKey) {
-          if (apiKeyError) {
-            apiKeyError.textContent =
-              'Invalid API key format. Must start with "sk-" followed by letters, numbers, hyphens, or underscores.';
-            apiKeyError.classList.remove('hidden');
-          }
-          return;
-        }
-
-        if (apiKeyError) {
-          apiKeyError.classList.add('hidden');
-        }
-
-        if (apiKey) {
-          try {
-            const response = await fetch('/api/set-cookie', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ apiKey }),
-            });
-            if (!response.ok) {
-              throw new Error('API key save failed');
-            }
-            closeModal();
-            updateApiKeyUI(apiKey);
-            showNotification('API key saved successfully!', 'success');
-          } catch (error) {
-            console.error('Error saving API key:', error);
-            showNotification('Failed to save API key', 'error');
-          }
-        }
-      });
-
-      // Remove API Key
-      removeApiKeyBtn?.addEventListener('click', async (e) => {
-        e.preventDefault();
-        try {
-          const response = await fetch('/api/delete-cookie', {
-            method: 'DELETE',
-          });
-
-          if (!response.ok) {
-            throw new Error('API key removal failed');
-          }
-          updateApiKeyUI(null);
-          showNotification('API key removed successfully!', 'success');
-        } catch (error) {
-          console.error('Error removing API key:', error);
-          showNotification('Failed to remove API key', 'error');
-        }
-      });
-
-      // Helper Functions
-      function updateApiKeyUI(apiKey: string | null) {
-        const showApiKeyModalBtn = document.getElementById('showApiKeyModalBtn');
-        const apiKeyStatus = document.getElementById('apiKeyStatus');
-        const generateBtn = document.getElementById('generateBtn'); // New line to select the button
-
-        if (apiKey) {
-          (apiKeyInput as HTMLInputElement).value = apiKey;
-          showApiKeyModalBtn?.classList.add('hidden');
-          apiKeyStatus?.classList.remove('hidden');
-          apiKeyStatus?.classList.add('block');
-          (generateBtn as HTMLButtonElement).disabled = false;
+          slamBtn.onmouseenter = () => (slamBtn.innerText = "EJECT")
+          slamBtn.onmouseleave = () => (slamBtn.innerText = "LOCKED")
         } else {
-          showApiKeyModalBtn?.classList.remove('hidden');
-          showApiKeyModalBtn?.classList.add('block');
-          apiKeyStatus?.classList.add('hidden');
-          apiKeyStatus?.classList.remove('block');
-          (generateBtn as HTMLButtonElement).disabled = true;
-          if (apiKeyInput) {
-            (apiKeyInput as HTMLInputElement).value = '';
-          }
+          slot?.classList.remove("inserted")
+          input.value = ""
+          input.disabled = false
+          slamBtn.innerText = "SLAM"
+          slamBtn.classList.remove("eject-mode")
+          routeBtn.style.display = "none"
+          slamBtn.onmouseenter = null
+          slamBtn.onmouseleave = null
         }
+
+        if (authState.active === provider) {
+          slot?.classList.add("routed")
+          routeBtn.innerText = "[⚡ ACTIVE]"
+        } else {
+          slot?.classList.remove("routed")
+          routeBtn.innerText = "ROUTE"
+        }
+      })
+
+      const statusLight = document.getElementById("main-status-light")
+      const btnText = document.getElementById("battery-btn-text")
+      if (authState.active) {
+        statusLight!.style.background = "#94f549"
+        statusLight!.style.boxShadow =
+          "0 0 15px #94f549, inset 0 0 5px rgba(0,0,0,0.5)"
+        btnText!.innerText = `Power Routed: ${authState.active.toUpperCase()}`
+      } else {
+        statusLight!.style.background = "#ff2a2a"
+        statusLight!.style.boxShadow = "inset 0 0 5px rgba(0,0,0,0.5)"
+        btnText!.innerText =
+          Object.keys(authState.keys).length > 0
+            ? "Warning: Power Not Routed!"
+            : "Open Core Battery Bay"
       }
+    }
 
-      function showNotification(message: string, type: 'success' | 'error') {
-        if (!notificationEl) return;
+    async function saveAuth() {
+      await fetch("/api/auth", {
+        method: "POST",
+        body: JSON.stringify(authState),
+      })
+      renderUI()
+    }
 
-        const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
-        notificationEl.textContent = message;
-        notificationEl.className = `fixed top-4 left-1/2 transform -translate-x-1/2 p-4 rounded-lg text-white text-center min-w-[300px] z-50 ${bgColor} shadow-lg`;
-        notificationEl.classList.remove('hidden');
+    // Event Listeners for UI interaction
+    document.querySelectorAll(".slot-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const provider = (e.target as HTMLElement).getAttribute(
+          "data-provider"
+        )!
+        if (authState.keys[provider]) {
+          // Eject
+          delete authState.keys[provider]
+          if (authState.active === provider)
+            authState.active = Object.keys(authState.keys)[0] || null
+          saveAuth()
+        } else {
+          // Slam
+          const val = (
+            document.getElementById(`key-${provider}`) as HTMLInputElement
+          ).value
+          if (!val) return alert("You gotta put a key in the slot, Morty!")
+          authState.keys[provider] = val
+          if (!authState.active) authState.active = provider
+          saveAuth()
+        }
+      })
+    })
 
-        setTimeout(() => {
-          notificationEl.classList.add('hidden');
-        }, 3000);
+    document.querySelectorAll(".route-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const provider = (e.target as HTMLElement).getAttribute(
+          "data-provider"
+        )!
+        authState.active = provider
+        saveAuth()
+      })
+    })
+
+    // Modal Logic
+    document.getElementById("openModalBtn")?.addEventListener("click", () => {
+      document.getElementById("battery-modal")?.classList.add("active")
+      document.getElementById("main-console")!.style.filter = "blur(3px)"
+    })
+    document.getElementById("closeModalBtn")?.addEventListener("click", () => {
+      document.getElementById("battery-modal")?.classList.remove("active")
+      document.getElementById("main-console")!.style.filter = "none"
+    })
+
+    // Simulation & Nav
+    document.getElementById("shootPortalBtn")?.addEventListener("click", () => {
+      if (!authState.active) {
+        alert(
+          "The gun has no active power! Slam an API core in the battery bay!"
+        )
+        return document.getElementById("openModalBtn")?.click()
       }
-    </script>
-  </body>
-</html>
+      let path = (document.getElementById("path-input") as HTMLInputElement)
+        .value
+      if (!path.startsWith("/")) path = `/${path}`
+
+      document.getElementById("main-console")?.classList.add("hidden-down")
+      document.getElementById("portal-bg")?.classList.add("active-portal")
+      document.getElementById("sim-container")?.classList.add("active")
+
+      const text = document.getElementById("loading-text")
+      setTimeout(() => (text!.innerText = "EXTRACTING HTML..."), 1000)
+      setTimeout(
+        () =>
+          (text!.innerText = `ROUTING THROUGH ${authState.active?.toUpperCase()}...`),
+        2000
+      )
+      setTimeout(() => (text!.innerText = "DODGING CRONENBERGS..."), 3000)
+
+      // After simulation, navigate to the generator route
+      setTimeout(() => (window.location.href = path), 4000)
+    })
+  </script>
+</Layout>

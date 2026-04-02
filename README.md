@@ -1,96 +1,84 @@
-# GPT FileSmith 🛠️
+# PORTAL.FS (formerly GPT FileSmith) 🪐🔫
 
-GPT FileSmith is a dynamic file generator inspired by _Rick and Morty's Interdimensional Cable_. Enter any path or URL (e.g., `/blackhole.py`, `/mcdonalds/special-deals.html`), and GPT-4 will generate a corresponding file based on the path and extension. If no extension is specified, it defaults to generating an HTML file. Currently, only HTML files are downloadable.
+PORTAL.FS is a dynamic interdimensional file generator inspired by Rick and Morty's portal gun. Enter any path or URL (e.g., `/plumbus.html`, `/blips-and-chitz/arcade.js`), and a powerful AI Core will generate a corresponding file based on the path and extension.
+
+Fully refactored to support multiple futuristic AI models, secure HTTP-only cookie authentication, and the Vercel AI SDK!
 
 ## 🌐 Demo
 
-Try it live at [GPT FileSmith](https://filesmith.aleksa.io/)!
+Try it live at [PORTAL.FS](https://portal.aleksa.codes/)!
 
 ## ✨ Features
 
-- **Dynamic File Creation**: Enter any path (e.g., `/about.html`, `/styles.css`), and GPT-4 generates file content based on the path and extension.
-- **HTML File Support**: Generate and download HTML files directly.
-- **Responsive Design**: Built with Astro and Tailwind CSS for a clean, adaptable UI.
-- **Direct Browser Access**: Enter file paths directly in the address bar (e.g., `/example.html`).
-- **Downloadable Files**: Download the generated HTML files with a single click.
+- **Dimensional Tethering**: Enter any path (e.g., `/about.html`, `/styles.css`), and the selected AI Model synthesizes file content based on the path.
+- **Multiverse Core Integration**: Slap your API keys into the Battery Bay to power the portal gun with `gpt-5.4-nano`, `gemini-3.1-flash-lite`, or `claude-4.5-haiku`. Keys are never saved to a database, just your local secure cookies!
+- **Rick & Morty Action Bar**: Wrap generated HTML in a sleek interdimensional action bar allowing instant extraction (downloads) or portal closing.
+- **Direct Address Bar Execution**: Just type `/anything.html` directly in the browser's address bar to skip the gadget UI and simulate instantly.
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Astro
-- **Styling**: Tailwind CSS
-- **API Integration**: OpenAI API
+- **Framework**: Astro v6
+- **Package Manager**: Bun
+- **Styling**: Tailwind CSS v4 & custom R&M CSS animations
+- **AI Integration**: Vercel AI SDK (OpenAI, Google Generative AI, Anthropic)
+- **Deployment**: Netlify Edge Functions
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- Yarn or npm
-- OpenAI API key
+- [Bun](https://bun.sh/)
+- At least one active API Key from OpenAI, Google (Gemini), or Anthropic (Claude)
 
 ### Installation
 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/aleksa-codes/gpt-filesmith.git
-   cd gpt-filesmith
+   git clone https://github.com/aleksa-codes/portal-fs.git
+   cd portal-fs
    ```
 
-2. Install dependencies:
+2. Install dependencies via Bun:
 
    ```bash
-   yarn install
-   # or
-   npm install
+   bun install
    ```
 
-3. Create a `.env` file with your OpenAI API key (optional; the key can also be added in-app):
+3. Start the development server:
 
    ```bash
-   OPENAI_API_KEY=your-api-key
+   bun dev
    ```
 
-4. Start the development server:
-
-   ```bash
-   yarn dev
-   # or
-   npm run dev
-   ```
-
-5. Access the app at `http://localhost:4321`.
+4. Access the app at `http://localhost:3000`.
+5. Open the **Core Battery Bay**, slam in your API key of choice, route the power, and shoot a portal!
 
 ## 💡 Usage
 
-1. Enter a path with an extension (e.g., `/example.html`, `/styles.css`). If no extension is specified, HTML will be used by default.
-2. Alternatively, enter the file path directly in the browser's address bar (e.g., `http://localhost:4321/example.html`).
-3. GPT-4 will generate file content based on the specified path and file type.
-4. Preview the generated file or download it if it’s an HTML file.
+1. Enter a coordinate path with an extension (e.g., `/pokemon/charizard.html`, `/styles.css`). If no extension is specified, HTML is synthesized by default.
+2. Alternatively, enter the file path directly in the browser's address bar.
+3. The Vercel AI SDK will synthesize file content matching the extension's best practices.
+4. Preview the generated UI or download the HTML file straight to your dimension.
 
 ### Example Paths
 
-- `/index.html`: Generates a homepage layout with header and navigation.
-- `/style.css`: Generates a stylesheet using Tailwind CSS classes.
-- `/api/response.json`: Creates a sample JSON API response.
-- `/app.js`: Produces a JavaScript file with basic functionality.
-- `/special-deals.html`: Generates a promotional webpage.
+- `/index.html`: Generates a fully responsive homepage layout.
+- `/dashboard/hologram.css`: Generates a stylesheet.
+- `/api/morty-brain-waves.json`: Creates a sample JSON API structure.
+- `/plumbus-manual.js`: Produces a JavaScript file.
 
 ## 🛠️ Building for Production
 
-To create a production build, run:
+To create a production build for Netlify, run:
 
-   ```bash
-   yarn build
-   # or
-   npm run build
-   ```
-
-The production-ready static files will be in the `dist` folder.
+```bash
+bun run build
+```
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/aleksa-codes/gpt-filesmith/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/aleksa-codes/portal-fs/blob/main/LICENSE) file for details.
 
 ---
 
