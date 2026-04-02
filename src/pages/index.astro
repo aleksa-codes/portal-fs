@@ -270,31 +270,8 @@ const title = "PORTAL.FS | Multiverse Generator"
         .value
       if (!path.startsWith("/")) path = `/${path}`
 
-      // Play the animation natively on the current index page
-      document.getElementById("main-console")?.classList.add("hidden-down")
-      document.getElementById("portal-bg")?.classList.add("active-portal")
-      setTimeout(() => {
-        document.getElementById("sim-container")?.classList.add("active")
-      }, 500)
-
-      const text = document.getElementById("loading-text")
-      if (text) {
-        setTimeout(() => (text.innerText = "EXTRACTING HTML..."), 1000)
-        setTimeout(
-          () =>
-            (text.innerText = `ROUTING THROUGH ${authState.active?.toUpperCase()}...`),
-          2000
-        )
-        setTimeout(() => (text.innerText = "DODGING CRONENBERGS..."), 3000)
-      }
-
-      // Tell the next page that we've already done the entry animation
-      sessionStorage.setItem("portalRouted", "true")
-
-      // Delay navigation so the transition can visibly play out
-      setTimeout(() => {
-        window.location.href = path
-      }, 3500)
+      // Native navigation will hit the `[...path].astro` route directly 
+      window.location.href = path
     })
   </script>
 </Layout>
