@@ -270,9 +270,6 @@ const title = "PORTAL.FS | Multiverse Generator"
         .value
       if (!path.startsWith("/")) path = `/${path}`
 
-      // Change the URL immediately so the user sees it in the address bar
-      history.pushState(null, "", path)
-
       // Play the animation natively on the current index page
       document.getElementById("main-console")?.classList.add("hidden-down")
       document.getElementById("portal-bg")?.classList.add("active-portal")
@@ -289,17 +286,12 @@ const title = "PORTAL.FS | Multiverse Generator"
           2000
         )
         setTimeout(() => (text.innerText = "DODGING CRONENBERGS..."), 3000)
-        setTimeout(() => (text.innerText = "ALMOST THERE, MORTY..."), 6000)
-        setTimeout(
-          () => (text.innerText = "FLURBO CAPACITOR OVERLOAD..."),
-          9000
-        )
       }
 
-      // Hard reload to route exactly to the [...path] sequence and stream the output securely
+      // Delay navigation so the transition can visibly play out
       setTimeout(() => {
-        window.location.replace(window.location.href)
-      }, 500)
+        window.location.href = path
+      }, 3500)
     })
   </script>
 </Layout>

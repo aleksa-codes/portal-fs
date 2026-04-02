@@ -125,14 +125,16 @@ const contentPromise = generateDimensionalContent(
   </div>
 
   <script is:inline>
-    // Trigger animation slightly later so the initial DOM positions are registered
-    requestAnimationFrame(() => {
+    // Since we're doing a fresh navigation, we can just play the same animation
+    // to give the illusion of the console dropping away regardless of if they used
+    // the address bar or the input directly!
+    setTimeout(() => {
       document.getElementById("main-console")?.classList.add("hidden-down");
       document.getElementById("portal-bg")?.classList.add("active-portal");
       setTimeout(() => {
         document.getElementById("sim-container")?.classList.add("active");
       }, 500);
-    });
+    }, 50); // slight buffer to ensure DOM layout is painted before transition starts
 
     const text = document.getElementById("loading-text");
     if (text) {
