@@ -131,16 +131,27 @@ const contentPromise = generateDimensionalContent(
   </div>
 
   <script is:inline>
-    // Since we're doing a fresh navigation, we can just play the same animation
-    // to give the illusion of the console dropping away regardless of if they used
-    // the address bar or the input directly!
-    setTimeout(() => {
-      document.getElementById("main-console")?.classList.add("hidden-down")
+    // If the user routed from the console (index.astro), the animation
+    // already successfully played out for 3.5s! Don't replay it to avoid duplicates.
+    if (sessionStorage.getItem("portalRouted")) {
+      sessionStorage.removeItem("portalRouted")
+      // Pre-apply the classes so it initializes in the hidden state!
+      document
+        .getElementById("main-console")
+        ?.style.setProperty("display", "none", "important")
       document.getElementById("portal-bg")?.classList.add("active-portal")
+      document.getElementById("sim-container")?.classList.add("active")
+    } else {
+      // Fresh navigation via address bar! Play the animation!
+      // Give the illusion of the console dropping away natively.
       setTimeout(() => {
-        document.getElementById("sim-container")?.classList.add("active")
-      }, 500)
-    }, 50) // slight buffer to ensure DOM layout is painted before transition starts
+        document.getElementById("main-console")?.classList.add("hidden-down")
+        document.getElementById("portal-bg")?.classList.add("active-portal")
+        setTimeout(() => {
+          document.getElementById("sim-container")?.classList.add("active")
+        }, 500)
+      }, 50) // slight buffer to ensure DOM layout is painted before transition starts
+    }
 
     const text = document.getElementById("loading-text")
     if (text) {

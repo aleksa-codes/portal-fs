@@ -288,6 +288,9 @@ const title = "PORTAL.FS | Multiverse Generator"
         setTimeout(() => (text.innerText = "DODGING CRONENBERGS..."), 3000)
       }
 
+      // Tell the next page that we've already done the entry animation
+      sessionStorage.setItem("portalRouted", "true")
+
       // Delay navigation so the transition can visibly play out
       setTimeout(() => {
         window.location.href = path
