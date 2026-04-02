@@ -1,7 +1,7 @@
 /* TEAM */
 Developer: aleksa-codes
 Site: https://aleksa.codes
-GitHub: https://github.com/aleksa-codes/portal-fs
+GitHub: https://github.com/aleksa-codes/portal
 
 /* SITE */
 Last update: 2026/04/02

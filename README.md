@@ -1,6 +1,6 @@
-# 🚀 Portal
+# 🌀 Portal
 
-> **🪐 Infinite Interdimensional Web Router:** An interdimensional file generator inspired by Rick and Morty's portal gun.
+> **Infinite Interdimensional Web Router** inspired by Rick and Morty's portal gun.
 
 Portal (formerly GPT FileSmith) allows you to enter any path or URL (e.g., `/plumbus.html`, `/blips-and-chitz/arcade.js`), and a powerful AI Core will generate a corresponding file based on the path and extension.
 
@@ -21,8 +21,8 @@ Portal (formerly GPT FileSmith) allows you to enter any path or URL (e.g., `/plu
 
 ```bash
 # Clone & install
-git clone https://github.com/aleksa-codes/portal-fs.git
-cd portal-fs
+git clone https://github.com/aleksa-codes/portal.git
+cd portal
 bun install
 
 # Run dev server
