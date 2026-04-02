@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro"
 
-const COOKIE_NAME = "portal_fs_auth"
+const COOKIE_NAME = "portal_auth"
 
 export const GET: APIRoute = async ({ cookies }) => {
   const auth = cookies.get(COOKIE_NAME)?.json() || { active: null, keys: {} }

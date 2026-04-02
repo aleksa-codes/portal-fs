@@ -1,8 +1,8 @@
-# 🚀 PORTAL.FS
+# 🚀 Portal
 
-> **🪐 Dimensional File Generator:** An interdimensional file generator inspired by Rick and Morty's portal gun.
+> **🪐 Infinite Interdimensional Web Router:** An interdimensional file generator inspired by Rick and Morty's portal gun.
 
-PORTAL.FS (formerly GPT FileSmith) allows you to enter any path or URL (e.g., `/plumbus.html`, `/blips-and-chitz/arcade.js`), and a powerful AI Core will generate a corresponding file based on the path and extension.
+Portal (formerly GPT FileSmith) allows you to enter any path or URL (e.g., `/plumbus.html`, `/blips-and-chitz/arcade.js`), and a powerful AI Core will generate a corresponding file based on the path and extension.
 
 [![Astro](https://img.shields.io/badge/Astro_6-FF5D01?logo=astro&logoColor=white)](https://astro.build/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)

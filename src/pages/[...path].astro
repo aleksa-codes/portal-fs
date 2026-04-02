@@ -20,7 +20,7 @@ if (path.length > 100) {
   return new Response("Path too long", { status: 400 })
 }
 
-const authCookie = Astro.cookies.get("portal_fs_auth")?.json()
+const authCookie = Astro.cookies.get("portal_auth")?.json()
 
 if (!authCookie || !authCookie.active || !authCookie.keys[authCookie.active]) {
   return new Response(
@@ -69,7 +69,7 @@ const contentPromise = generateDimensionalContent(
 )
 ---
 
-<Layout title={`PORTAL.FS | ${path}`}>
+<Layout title={`Portal | ${path}`}>
   <!-- LOADING SIMULATION UI -->
   <div class="portal-wrapper" id="portal-bg">
     <div class="portal-swirl portal-layer-1"></div>
@@ -84,7 +84,7 @@ const contentPromise = generateDimensionalContent(
     <div class="screw screw-bl"></div><div class="screw screw-br"></div>
 
     <header>
-      <h1 class="app-title">PORTAL.FS</h1>
+      <h1 class="app-title">Portal</h1>
       <p class="app-subtitle">Dimensional File Generator v1.37</p>
     </header>
 
